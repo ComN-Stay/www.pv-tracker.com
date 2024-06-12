@@ -1,0 +1,63 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Energy index{% endblock %}
+
+{% block body %}
+    <h1>Energy index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Date</th>
+                <th>Production</th>
+                <th class="text-center" colspan="2">Auto conso</th>
+                <th class="text-center" colspan="2">Conso réseau</th>
+                <th class="text-center" colspan="2">Revente</th>
+                <th>Balance</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for energy in energies %}
+            <tr>
+                <td>{{ energy.date ? energy.date|date('d/m/Y') : '' }}</td>
+                <td>{{ energy.production|number_format(2, ',', '') }} Kwh</td>
+                <td>{{ energy.self|number_format(2, ',', '') }} Kwh</td>
+                <td>{{ energy.savings|number_format(2, ',', '') }} €</td>
+                <td>{{ energy.import|number_format(2, ',', '') }} Kwh</td>
+                <td>{{ energy.importCost|number_format(2, ',', '') }} €</td>
+                <td>{{ energy.export|number_format(2, ',', '') }} Kwh</td>
+                <td>{{ energy.exportIncome|number_format(2, ',', '') }} €</td>
+                <td><span class="{{ energy.balance < 0 ? 'text-red' : 'text-green' }}">{{ energy.balance|number_format(2, ',', '') }} €</span></td>
+                <td>
+                    <a href="{{ path('app_energy_edit', {'id': energy.id}) }}">Editer</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="11">Aucune relève pour le moment !</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+        <tfoot>
+            <tr>
+                <td>Totaux</td>
+                <td>{{ exploitation.production|number_format(2, ',', '') }} Kwh</td>
+                <td>{{ exploitation.self|number_format(2, ',', '') }} Kwh</td>
+                <td>{{ exploitation.savings|number_format(2, ',', '') }} €</td>
+                <td>{{ exploitation.importkwh|number_format(2, ',', '') }} Kwh</td>
+                <td>{{ exploitation.importCost|number_format(2, ',', '') }} €</td>
+                <td>{{ exploitation.export|number_format(2, ',', '') }} Kwh</td>
+                <td>{{ exploitation.exportIncome|number_format(2, ',', '') }} €</td>
+                <td>
+                    <span class="{{ exploitation.balance < 0 ? 'text-red' : 'text-green' }}">
+                        {{ exploitation.balance|number_format(2, ',', '') }} €
+                    </span>
+                </td>
+                <td></td>
+            </tr>
+        </tfoot>
+    </table>
+
+    <a class="btn btn-success btn-lg" href="{{ path('app_energy_new') }}">Nouvelle relève</a>
+{% endblock %}

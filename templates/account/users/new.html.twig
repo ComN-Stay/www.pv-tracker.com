@@ -1,0 +1,10 @@
+{% extends 'account/base_account.html.twig' %}
+
+{% block title %}Nouvel adminstrateur{% endblock %}
+
+{% block body %}
+
+    {{ include('account/users/_form.html.twig') }}
+
+    <a href="{{ path('app_users_account_index', {'token':app.user.fkCompany.token}) }}" class="btn btn-info mr-3"><i class="fa-solid fa-chevron-left fa-sm mr-3"></i>Retour</a>
+{% endblock %}

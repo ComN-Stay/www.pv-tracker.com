@@ -1,0 +1,24 @@
+{% for message in app.flashes('success') %}
+	<script>
+		toastr.options.closeHtml = '<button class="closebtn"><i class="bi bi-x"></i></button>';
+        toastr.success('{{ message.text }}', '{{ message.title }}');
+	</script>
+{% endfor %}
+{% for message in app.flashes('error') %}
+	<script>
+		toastr.options.closeHtml = '<button class="closebtn"><i class="bi bi-x"></i></button>';
+        toastr.error('{{ message.text }}', '{{ message.title }}');
+	</script>
+{% endfor %}
+{% for message in app.flashes('info') %}
+	<script>
+		toastr.options.closeHtml = '<button class="closebtn"><i class="bi bi-x"></i></button>';
+        toastr.info('{{ message.text }}', '{{ message.title }}');
+	</script>
+{% endfor %}
+{% for message in app.flashes('warning') %}
+	<script>
+		toastr.options.closeHtml = '<button class="closebtn"><i class="bi bi-x"></i></button>';
+        toastr.warning('{{ message.text }}', '{{ message.title }}');
+	</script>
+{% endfor %}

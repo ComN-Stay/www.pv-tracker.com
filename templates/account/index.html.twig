@@ -1,0 +1,118 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Mon dashboard
+{% endblock %}
+
+{% block body %}
+	
+		<div class="alert alert-danger {% if testConsumption is not empty and testResale is not empty and testSubscription is not empty and indexes is not empty %}hidden{% endif %}" role="alert">
+			<ul>
+				{% if testConsumption is empty %}
+					<li>
+						* Vous devez renseigner le montant TTC d'achat d'électricité auprès de votre fournisseur.<br/>
+						<em>Si vous n'êtes pas raccordé au réseau, notez 0</em>
+                        <a href="{{ path('app_prices_new')}}">Renseigner mes tarifs</a>
+					</li>
+				{% endif %}
+				{% if testSubscription is empty %}
+					<li>
+						* Vous devez renseigner le montant TTC de votre abonnement auprès de votre fournisseur.<br/>
+						<em>Si vous n'êtes pas raccordé au réseau, notez 0</em>
+                        <a href="{{ path('app_prices_new')}}">Renseigner mes tarifs</a>
+					</li>
+				{% endif %}
+				{% if testResale is empty %}
+					<li>
+						* Vous devez renseigner le montant TTC de revente (surplus ou totale) auprès de votre opérateur.<br/>
+						<em>Si vous ne revendez pas votre surplus, notez 0</em>
+                        <a href="{{ path('app_prices_new')}}">Renseigner mes tarifs</a>
+					</li>
+				{% endif %}
+                {% if indexes is empty %}
+					<li>
+						* Vous devez renseigner les index de départ pour les calculs.<br/>
+                        <a href="{{ path('app_indexes_new')}}">Renseigner mes index</a>
+					</li>
+				{% endif %}
+			</ul>
+		</div>
+
+        <div class="row">
+            <div class="col-md-4 col-xs-12">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Relevés</h5>
+                        <h6 class="card-subtitle mb-2 text-muted">{{ date|date('d/m/Y') }}</h6>
+                        <p class="card-text">
+                            {% if yesterday is not empty %}
+
+                            {% else %}
+                                <h3>Vous n'avez pas de relevé pour le moment</h3>
+                            {% endif %}
+                        </p>
+                        <a href="{{ path('app_energy_new')}}" class="card-link">Ajouter une relève</a>
+                        <a href="{{ path('app_energy_index')}}" class="card-link">Historique des relèves</a>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-md-4 col-xs-12">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Tarifs appliqués</h5>
+                        <p class="card-text">
+                            <ul>
+                                {% for price in prices %}
+                                    <li>
+                                        {% if price.type == 'consumption' %}
+                                            Tarif achat TTC / : {{ price.amount|number_format(4, ',', '') }} €
+                                        {% elseif price.type == 'subscription' %}
+                                            Tarif abonnement TTC : {{ price.amount|number_format(2, ',', '') }} €
+                                        {% else %}
+                                            †arif de revente TTC / Kwh: {{ price.amount|number_format(3, ',', '') }} €
+                                        {% endif %}
+                                    </li>
+                                {% else %}
+                                    <li>
+                                        Vous n'avez pas encore renseigner vos tarifs<br />
+                                        <a href="{{ path('app_prices_new')}}">Renseigner mes tarifs</a>
+                                    </li>
+                                {% endfor %}
+                            </ul>
+                        </p>
+                        {% if prices is not empty %}
+                            <a href="{{ path('app_prices_new')}}">Modifier ou ajouter un tarif</a>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-4 col-xs-12">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Index de départ</h5>
+                        <p class="card-text">
+                            <ul>
+                                {% if indexes is not empty %}
+                                    <li>
+                                        Production : {{ indexes.production|number_format(2, ',', '') }} Kwh
+                                    </li>
+                                    <li>
+                                        Revente : {{ indexes.resale|number_format(2, ',', '') }} Kwh
+                                    </li>
+                                {% else %}
+                                    <li>
+                                        Vous n'avez pas encore renseigner vos index de départ<br />
+                                        <a href="{{ path('app_indexes_new')}}" class="card-link">-> Renseigner mes index</a>
+                                    </li>
+                                {% endif %}
+                            </ul>
+                            {% if indexes is not empty %}
+                                <a href="{{ path('app_indexes_edit')}}" class="card-link">Modifier les index</a>
+                            {% endif %}
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+{% endblock %}

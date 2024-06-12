@@ -1,0 +1,30 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Tarifs énergie{% endblock %}
+
+{% block stylesheets %}
+    {{ include('account/_assets/_calendar_css.html.twig') }}
+{% endblock %}
+
+{% block body %}
+
+    {{ include('account/prices/_form.html.twig') }}
+
+{% endblock %}
+
+{% block javascripts %}
+	{{ include('account/_assets/_calendar_js.html.twig') }}
+    <script>
+        $(document).on('click', '._getDate', function(e){
+            e.preventDefault();
+            let date = $(this).data('date');
+            $('.day.active').removeClass('active');
+            $(this).parent().addClass('active');
+            let exp = date.split('-');
+            let year = exp[0];
+            let mounth = (exp[1].length == 1) ? 0 + exp[1] : $exp[1];
+            let day = (exp[2].length == 1) ? 0 + exp[2] : $exp[2];
+            $('#prices_date_start').val(year + '-' + mounth + '-' + day)
+        });
+    </script>
+{% endblock %}

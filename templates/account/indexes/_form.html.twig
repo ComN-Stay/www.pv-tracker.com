@@ -1,0 +1,16 @@
+<p>
+    Vos index de départ sont utilisés pour calculer le total de votre production et de votre injection sur le réseau dans le cas ou vous commencez à utiliser cette plateforme en ayant déjà votre système PV en production.<br />
+    Ils servent aussi pour le calcul de vos revenus en cas de revente totale ou partielle.
+</p>
+
+{{ form_start(form) }}
+    <div class="row">
+        <div class="col-6">
+            {{ form_row(form.production) }}
+        </div>
+        <div class="col-6">
+            {{ form_row(form.resale) }}
+        </div>
+    </div>
+    <button class="btn btn-success btn-lg">{{ button_label|default('Enregistrer') }}</button>
+{{ form_end(form) }}

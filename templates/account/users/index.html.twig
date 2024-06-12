@@ -1,0 +1,121 @@
+{% extends 'account/base_account.html.twig' %}
+
+{% block title %}Gestion utilisateurs{% endblock %}
+
+{% block body %}
+
+    <table class="table _datatable table-striped table-bordered">
+        <thead>
+            <tr>
+                <th colspan="3"></th>
+                <th colspan="4" class="text-center">Autorisations d'accès</th>
+                <th colspan="3" class="text-center">Alertes mails</th>
+                <th></th>
+            </tr>
+            <tr>
+                <th>Nom</th>
+                <th>Email</th>
+                <th>Role</th>
+                <th>Projets</th>
+                <th>Docs</th>
+                <th>Société</th>
+                <th>Admins</th>
+                <th>Devis</th>
+                <th>Factures</th>
+                <th>Avoirs</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for user in users %}
+            <tr>
+                <td>{{ user.firstname }} {{ user.lastname }}</td>
+                <td>{{ user.email }}</td>
+                <td>
+                    {% if user.roles is defined and user.roles.0 == 'ROLE_CLIENT' %}
+                        administrateur
+                    {% else %}
+                        Super administrateur
+                    {% endif %}
+                </td>
+                <td class="text-center">
+                    <b>
+                        {% if user.isAccessProjects == 1 %}
+                            <i class="fa-regular fa-circle-check text-green"></i>
+                        {% else %}
+                            <i class="fa-solid fa-ban text-red"></i>
+                        {% endif %}
+                    </b>
+                </td>
+                <td class="text-center">
+                    <b>
+                        {% if user.isAccessDocuments == 1 %}
+                            <i class="fa-regular fa-circle-check text-green"></i>
+                        {% else %}
+                            <i class="fa-solid fa-ban text-red"></i>
+                        {% endif %}
+                    </b>
+                </td>
+                <td class="text-center">
+                    <b>
+                        {% if user.isAccessProfile == 1 %}
+                            <i class="fa-regular fa-circle-check text-green"></i>
+                        {% else %}
+                            <i class="fa-solid fa-ban text-red"></i>
+                        {% endif %}
+                    </b>
+                </td>
+                <td class="text-center">
+                    <b>
+                        {% if user.isAccessUsers == 1 %}
+                            <i class="fa-regular fa-circle-check text-green"></i>
+                        {% else %}
+                            <i class="fa-solid fa-ban text-red"></i>
+                        {% endif %}
+                    </b>
+                </td>
+                <td class="text-center">
+                    <b>
+                        {% if user.isAlertEstimate == 1 %}
+                            <i class="fa-regular fa-circle-check text-green"></i>
+                        {% else %}
+                            <i class="fa-solid fa-ban text-red"></i>
+                        {% endif %}
+                    </b>
+                </td>
+                <td class="text-center">
+                    <b>
+                        {% if user.isAlertInvoice == 1 %}
+                            <i class="fa-regular fa-circle-check text-green"></i>
+                        {% else %}
+                            <i class="fa-solid fa-ban text-red"></i>
+                        {% endif %}
+                    </b>
+                </td>
+                <td class="text-center">
+                    <b>
+                        {% if user.isAlertRefunds == 1 %}
+                            <i class="fa-regular fa-circle-check text-green"></i>
+                        {% else %}
+                            <i class="fa-solid fa-ban text-red"></i>
+                        {% endif %}
+                    </b>
+                </td>
+                <td>
+                    <a class="form_list" href="{{ path('app_users_account_edit', {'token': user.token}) }}"><i class="fa-solid fa-pen-to-square fa-lg ml-3"></i></a>
+                    <form class="form_list" method="post" action="{{ path('app_users_account_delete', {'token': user.token}) }}">
+                        <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ user.id) }}">
+                        <button class="btn neg-1 _deleteBtn {% if app.user.id == user.id %}disabled{% endif %}" {% if app.user.id == user.id %}disabled{% endif %}><i class="fa-solid fa-trash-can fa-lg"></i></button>
+                    </form>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="6">Aucun enregistrement</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_users_account_new') }}" class="btn btn-info btn-lg mb-3">Nouvel utilisateur</a>
+{% endblock %}

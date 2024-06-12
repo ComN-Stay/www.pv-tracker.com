@@ -1,0 +1,41 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Systems index{% endblock %}
+
+{% block body %}
+    <h1>Systems index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Name</th>
+                <th>System_id</th>
+                <th>Token</th>
+                <th>Refresh_token</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for system in systems %}
+            <tr>
+                <td>{{ system.id }}</td>
+                <td>{{ system.name }}</td>
+                <td>{{ system.systemId }}</td>
+                <td>{{ system.token }}</td>
+                <td>{{ system.refreshToken }}</td>
+                <td>
+                    <a href="{{ path('app_systems_show', {'id': system.id}) }}">show</a>
+                    <a href="{{ path('app_systems_edit', {'id': system.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="6">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_systems_new') }}">Create new</a>
+{% endblock %}

@@ -1,0 +1,109 @@
+<h1>Mes tarifs energie</h1>
+<p>Sur cette page vous avez un historique de votre tarification sur le montant de votre abonnement, le montant de revente et le prix d'achat du Kwh.<br />
+    Si vous changez de fournisseur d'énergie, ne modifiez pas les montants de votre abonnement et du prix d'achat du Kwh pour ne pas changer les données que vous avez déjà enregistrées.<br />
+    Dans ce cas, créez un nouveau tarif pour l'abonnement ainsi que pour le prix d'achat.</p>
+
+<div class="alert alert-danger {% if (testConsumption is not defined or testConsumption is not empty)
+ and (testResale is not defined or testResale is not empty) 
+ and (testSubscription is not defined or testSubscription is not empty) %}hidden{% endif %}" role="alert">
+    <ul>
+        {% if testConsumption is defined and testConsumption is empty %}
+            <li>
+                * Vous devez renseigner le montant TTC d'achat d'électricité auprès de votre fournisseur.<br />
+                <em>Si vous n'êtes pas raccordé au réseau, notez 0</em>
+            </li>
+        {% endif %}
+        {% if testSubscription is defined and testSubscription is empty %}
+            <li>
+                * Vous devez renseigner le montant TTC de votre abonnement auprès de votre fournisseur.<br />
+                <em>Si vous n'êtes pas raccordé au réseau, notez 0</em>
+            </li>
+        {% endif %}
+        {% if testResale is defined and testResale is empty %}
+            <li>
+                * Vous devez renseigner le montant TTC de revente (surplus ou totale) auprès de votre opérateur.<br />
+                <em>Si vous ne revendez pas votre surplus, notez 0</em>
+            </li>
+        {% endif %}
+    </ul>
+</div>
+
+{{ form_start(form) }}
+    <div class="row">
+        <div class="col-md-3 col-xs-12">
+            <div class="jumbotron">
+				<h3 class="text-center">
+					<a id="left" href="#">
+						<i class="fa fa-chevron-left"></i>
+					</a>
+					<span>&nbsp;</span>
+					<span id="month"></span>
+					<span>&nbsp;</span>
+					<span id="year"></span>
+					<span>&nbsp;</span>
+					<a id="right" href="#">
+						<i class="fa fa-chevron-right"></i>
+					</a>
+                    <span>&nbsp;</span>
+				</h3>
+			</div>
+			<table class="table calendar_table"></table>
+        </div>
+        <div class="col-md-3 col-xs-12">
+            {{ form_row(form.type) }}
+        </div>
+        <div class="col-md-3 col-xs-12">
+            {{ form_row(form.amount) }}
+        </div>
+        <div class="col-md-3 col-xs-12">
+            {{ form_row(form.active) }}
+        </div>
+        <div class="hidden">
+            {{ form_row(form.date_start) }}
+        </div>
+    </div>
+    <button class="btn btn-success btn-lg mt-3">{{ button_label|default('Enregistrer') }}</button>
+{{ form_end(form) }}
+
+<table class="table _datatable table-striped table-bordered">
+        <thead>
+            <tr>
+                <th>Date de début</th>
+                <th>Type</th>
+                <th>Tarif TTC</th>
+                <th>Actif</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for price in allPrices %}
+            <tr>
+                <td>{{ price.dateStart ? price.dateStart|date('d/m/Y') : '' }}</td>
+                <td>
+                    {% if price.type == "consumption" %}
+                        Tarif d'achat du Kw
+                    {% elseif price.type == "resale" %}
+                        Tarif de revente
+                    {% else %}
+                        abonnement
+                    {% endif %}
+                </td>
+                <td>
+                    {% if price.type == "consumption" %}
+                        {{ price.amount|number_format(4, ',', '') }}
+                    {% else %}
+                        {{ price.amount|number_format(2, ',', '') }}
+                    {% endif %} €
+                </td>
+                <td>{{ price.active ? 'Oui' : 'Non' }}</td>
+                <td class="col-action">
+                    <a href="{{ path('app_prices_edit', {'id': price.id}) }}">Editer</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="5">Aucun tarif renseigné</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>

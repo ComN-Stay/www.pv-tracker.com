@@ -1,0 +1,4 @@
+<form method="post" action="{{ path('app_energy_delete', {'id': energy.id}) }}">
+    <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ energy.id) }}">
+    <button class="btn btn-danger btn-lg _delete">Supprimer cette relève</button>
+</form>
