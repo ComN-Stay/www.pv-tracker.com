@@ -121,7 +121,7 @@ class AppFixtures extends Fixture
         $team->setFkGender($this->getReferencedObject(Genders::class, 2, $manager));
         $team->setFirstname('Xavier');
         $team->setLastname('Tezza');
-        $team->setFkStatus($this->getReferencedObject(UserStatuses::class, 2, $manager));
+        $team->setFkStatus($this->getReferencedObject(UserStatuses::class, 1, $manager));
         $manager->persist($team);
 
         $manager->flush();
@@ -149,7 +149,7 @@ class AppFixtures extends Fixture
         $user->setTown('Bessières');
         $user->setMobile('06 16 94 06 53');
         $user->setFkCountry($this->getReferencedObject(Countries::class, 75, $manager));
-        $user->setFkStatus($this->getReferencedObject(UserStatuses::class, 2, $manager));
+        $user->setFkStatus($this->getReferencedObject(UserStatuses::class, 1, $manager));
         $manager->persist($user);
 
         $manager->flush();

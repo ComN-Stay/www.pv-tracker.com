@@ -7,6 +7,19 @@
 	
 		<div class="alert alert-danger {% if testConsumption is not empty and testResale is not empty and testSubscription is not empty and indexes is not empty %}hidden{% endif %}" role="alert">
 			<ul>
+                {% if testSystem is empty %}
+                    <li>
+                        * Vous devez connecter votre compte Enphase, pour ce faire cliquez sur le lien suivant et suivez les instructions :<br />
+                        <a href="{{ app.request.server.get('ENPHASE_LINK') }}" class="btn btn-success btn-lg">Connecter Enphase</a>
+                    </li>
+                {% endif %}
+                {% if testSystem is not empty and yesterday is empty %}
+                    <li>
+                        * Si vous souhaitez importer vos données depuis le cloud Enphase renseignez ci-dessous la date de dbut de l'import :<br />
+                        <form name="enphase" method="get" action="{{ path('app_enphase_import') }}">
+                            <input type="date" name="date"> <button class="btn btn-success ml-3">Importer mes données</button>
+                    </li>
+                {% endif %}
 				{% if testConsumption is empty %}
 					<li>
 						* Vous devez renseigner le montant TTC d'achat d'électricité auprès de votre fournisseur.<br/>

@@ -2,13 +2,14 @@
 
 namespace App\Controller\Account;
 
-use App\Repository\EnergyRepository;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use App\Repository\SystemsRepository;
 use App\Repository\PricesRepository;
 use App\Repository\IndexesRepository;
+use App\Repository\EnergyRepository;
 
 class AccountController extends AbstractController
 {
@@ -17,6 +18,7 @@ class AccountController extends AbstractController
         IndexesRepository $indexesRepository,
         PricesRepository $pricesRepository,
         EnergyRepository $energyRepository,
+        SystemsRepository $systemsRepository,
         Security $security
     ): Response
     {
@@ -31,6 +33,7 @@ class AccountController extends AbstractController
             'testConsumption' => $pricesRepository->findBy(['fk_user' => $security->getUser(), 'type' => 'consumption']),
             'testResale' => $pricesRepository->findBy(['fk_user' => $security->getUser(), 'type' => 'resale']),
             'testSubscription' => $pricesRepository->findBy(['fk_user' => $security->getUser(), 'type' => 'subscription']),
+            'testSystem' => $systemsRepository->findOneBy(['fk_user' => $security->getUser()])
         ]);
     }
 }

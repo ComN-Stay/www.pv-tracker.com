@@ -54,6 +54,10 @@ class Months
     #[ORM\JoinColumn(nullable: false)]
     private ?Users $fk_user = null;
 
+    #[ORM\ManyToOne(inversedBy: 'months')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Systems $fk_system = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -211,6 +215,18 @@ class Months
     public function setFkUser(?Users $fk_user): static
     {
         $this->fk_user = $fk_user;
+
+        return $this;
+    }
+
+    public function getFkSystem(): ?Systems
+    {
+        return $this->fk_system;
+    }
+
+    public function setFkSystem(?Systems $fk_system): static
+    {
+        $this->fk_system = $fk_system;
 
         return $this;
     }
